@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brandlete Playmaker Network (BPN)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --cyan:#00CCFF; --cyan-bright:#5CDBFF; --cyan-deep:#00A8DB;
+    --ink:#ffffff; --muted:#8A93A8; --muted-dim:#67707F;
+    --card:rgba(255,255,255,0.028); --card-line:rgba(255,255,255,0.09);
+    --bg:#0A0E17;
+    --max:1080px;
+  }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink); background:var(--bg);
+    -webkit-font-smoothing:antialiased; line-height:1.5; overflow-x:hidden;
+  }
+  body{
+    background:
+      radial-gradient(1100px 650px at 12% -6%, rgba(0,204,255,0.10) 0%, rgba(0,204,255,0) 55%),
+      radial-gradient(900px 720px at 110% 3%, rgba(0,176,230,0.07) 0%, rgba(0,176,230,0) 50%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 26px; }
+  a{ color:inherit; text-decoration:none; }
+  .accent{ color:var(--cyan); }
+  .cbright{ color:var(--cyan-bright); }
+
+  /* nav */
+  nav{ position:sticky; top:0; z-index:50; backdrop-filter:blur(12px);
+    background:rgba(10,14,23,0.72); border-bottom:1px solid var(--card-line); }
+  .nav-in{ max-width:var(--max); margin:0 auto; padding:15px 26px; display:flex; align-items:center; justify-content:space-between; }
+  .word{ font-size:20px; font-weight:800; letter-spacing:-0.02em; }
+  .word span{ color:var(--cyan-bright); }
+  .nav-links{ display:flex; gap:26px; align-items:center; }
+  .nav-links a{ font-size:13.5px; color:var(--muted); font-weight:500; transition:color .2s; }
+  .nav-links a:hover{ color:var(--ink); }
+  .btn{ display:inline-block; background:linear-gradient(180deg,#33D6FF,var(--cyan-deep));
+    color:#04070c; font-weight:700; border-radius:999px; padding:11px 22px; font-size:14px;
+    border:none; cursor:pointer; transition:transform .15s, box-shadow .2s; white-space:nowrap; }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 10px 30px rgba(0,204,255,0.28); }
+  .btn-ghost{ background:transparent; border:1.4px solid rgba(0,204,255,0.55); color:var(--cyan-bright); }
+  .btn-ghost:hover{ box-shadow:none; background:rgba(0,204,255,0.08); }
+  @media(max-width:720px){ .nav-links a:not(.btn){ display:none; } }
+
+  /* section scaffolding */
+  section{ padding:82px 0; border-top:1px solid rgba(255,255,255,0.05); }
+  .eyebrow{ font-size:12px; font-weight:700; letter-spacing:0.22em; color:var(--cyan-bright); text-transform:uppercase; display:flex; align-items:center; gap:10px; }
+  h2{ font-size:34px; font-weight:800; letter-spacing:-0.025em; margin-top:16px; line-height:1.1; }
+  .lede{ font-size:16px; color:var(--muted); margin-top:16px; max-width:640px; line-height:1.65; }
+  .lede b{ color:#D7E0EA; font-weight:600; }
+
+  /* hero */
+  .hero{ padding:78px 0 70px; border-top:none; text-align:center; }
+  .pill{ display:inline-block; border:1.4px solid var(--cyan); color:var(--cyan-bright);
+    font-size:11.5px; font-weight:700; letter-spacing:0.18em; padding:8px 17px; border-radius:999px; }
+  .hero h1{ font-size:60px; font-weight:900; letter-spacing:-0.035em; line-height:1.02; margin-top:26px; }
+  .hero p.sub{ font-size:18px; color:var(--muted); margin:22px auto 0; max-width:600px; line-height:1.6; }
+  .hero p.sub b{ color:#D7E0EA; font-weight:600; }
+  .hero-cta{ margin-top:34px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .stat-strip{ margin-top:56px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .stat{ background:var(--card); border:1px solid var(--card-line); border-radius:14px; padding:20px 26px; min-width:150px; }
+  .stat .n{ font-size:30px; font-weight:800; color:var(--cyan); letter-spacing:-0.02em; }
+  .stat .l{ font-size:12.5px; color:var(--muted); margin-top:5px; }
+  @media(max-width:720px){ .hero h1{ font-size:40px; } }
+
+  /* generic cards */
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:34px; }
+  .c{ background:var(--card); border:1px solid var(--card-line); border-radius:16px; padding:24px; transition:border-color .2s, transform .2s; }
+  .c:hover{ border-color:rgba(0,204,255,0.4); transform:translateY(-2px); }
+  .c .k{ width:38px; height:38px; border-radius:10px; background:rgba(0,204,255,0.14);
+    display:flex; align-items:center; justify-content:center; color:var(--cyan-bright); font-weight:800; font-size:17px; }
+  .c h3{ font-size:16.5px; font-weight:700; margin-top:16px; }
+  .c p{ font-size:13.5px; color:var(--muted-dim); margin-top:8px; line-height:1.55; }
+
+  /* relay steps */
+  .relay{ margin-top:34px; display:flex; flex-direction:column; gap:12px; }
+  .step{ display:flex; gap:18px; align-items:flex-start; background:var(--card); border:1px solid var(--card-line);
+    border-radius:14px; padding:18px 22px; }
+  .step .num{ flex:0 0 auto; width:34px; height:34px; border-radius:999px; border:1.5px solid var(--cyan);
+    color:var(--cyan-bright); font-weight:800; display:flex; align-items:center; justify-content:center; font-size:15px; }
+  .step .st-t{ font-size:15.5px; font-weight:700; }
+  .step .st-d{ font-size:13.5px; color:var(--muted); margin-top:3px; }
+
+  /* calculator */
+  .calc-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:36px; align-items:stretch; }
+  @media(max-width:820px){ .calc-wrap{ grid-template-columns:1fr; } }
+  .calc-panel{ border:1px solid rgba(0,204,255,0.45); border-radius:20px;
+    background:linear-gradient(140deg, rgba(0,204,255,0.10), rgba(0,204,255,0.02)); padding:30px; }
+  .calc-label{ font-size:12px; font-weight:700; letter-spacing:0.14em; color:var(--cyan-bright); text-transform:uppercase; }
+  .calc-val{ font-size:46px; font-weight:800; letter-spacing:-0.03em; margin-top:10px; }
+  .calc-val span{ font-size:15px; color:var(--muted); font-weight:500; }
+  .calc-ath{ font-size:13px; color:var(--muted); margin-top:6px; }
+  input[type=range]{ -webkit-appearance:none; width:100%; height:6px; border-radius:999px; margin-top:26px;
+    background:linear-gradient(90deg,var(--cyan) 0%,var(--cyan) var(--fill,40%),rgba(255,255,255,0.12) var(--fill,40%),rgba(255,255,255,0.12) 100%); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:22px; height:22px; border-radius:999px;
+    background:#fff; border:4px solid var(--cyan); cursor:pointer; box-shadow:0 4px 14px rgba(0,204,255,0.5); }
+  input[type=range]::-moz-range-thumb{ width:18px; height:18px; border-radius:999px; background:#fff; border:4px solid var(--cyan); cursor:pointer; }
+  .range-ends{ display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted-dim); margin-top:10px; }
+  .payout{ border:1px solid var(--card-line); border-radius:20px; background:var(--card); padding:30px; display:flex; flex-direction:column; }
+  .payout h4{ font-size:13px; font-weight:700; letter-spacing:0.08em; color:var(--muted); text-transform:uppercase; }
+  .yr{ display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.07); }
+  .yr .yl{ font-size:14.5px; color:#E7EDF3; font-weight:500; }
+  .yr .yl b{ color:var(--cyan-bright); font-weight:700; }
+  .yr .yv{ font-size:20px; font-weight:800; letter-spacing:-0.02em; }
+  .total{ margin-top:20px; background:linear-gradient(180deg,#33D6FF,var(--cyan-deep)); color:#04070c;
+    border-radius:14px; padding:18px 22px; display:flex; justify-content:space-between; align-items:center; }
+  .total .tl{ font-size:13.5px; font-weight:700; }
+  .total .tv{ font-size:28px; font-weight:900; letter-spacing:-0.02em; }
+  .calc-foot{ font-size:12px; color:var(--muted-dim); margin-top:20px; line-height:1.55; }
+
+  /* rate chips */
+  .rates{ display:flex; gap:12px; margin-top:26px; flex-wrap:wrap; }
+  .rate{ flex:1 1 150px; background:var(--card); border:1px solid var(--card-line); border-radius:14px; padding:18px 20px; }
+  .rate .ry{ font-size:12px; color:var(--muted); font-weight:600; letter-spacing:0.05em; }
+  .rate .rp{ font-size:30px; font-weight:800; color:var(--cyan); margin-top:4px; letter-spacing:-0.02em; }
+
+  /* tiers */
+  .tiers{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; margin-top:34px; }
+  .tier{ background:var(--card); border:1px solid var(--card-line); border-radius:16px; padding:24px; }
+  .tier .tn{ font-size:12px; font-weight:700; letter-spacing:0.12em; color:var(--cyan-bright); text-transform:uppercase; }
+  .tier .tr{ font-size:13px; color:var(--muted-dim); margin-top:2px; }
+  .tier .td{ font-size:14px; color:#E7EDF3; margin-top:14px; line-height:1.5; }
+
+  /* two-col lists */
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:34px; }
+  @media(max-width:720px){ .split{ grid-template-columns:1fr; } }
+  .listcard{ background:var(--card); border:1px solid var(--card-line); border-radius:16px; padding:26px; }
+  .listcard h3{ font-size:15px; font-weight:700; letter-spacing:0.02em; }
+  .listcard.good h3{ color:var(--cyan-bright); }
+  .listcard.bad h3{ color:#E0876A; }
+  .listcard ul{ list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:12px; }
+  .listcard li{ font-size:14px; color:var(--muted); display:flex; gap:11px; line-height:1.5; }
+  .listcard li .mk{ flex:0 0 auto; margin-top:1px; color:var(--cyan); font-weight:800; }
+  .listcard.bad li .mk{ color:#E0876A; }
+
+  /* playbook */
+  .pb{ margin-top:34px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media(max-width:720px){ .pb{ grid-template-columns:1fr; } }
+  .pbrow{ background:var(--card); border:1px solid var(--card-line); border-radius:14px; padding:20px 22px; }
+  .pbrow .pt{ font-size:15px; font-weight:700; color:var(--cyan-bright); }
+  .pbrow .pd{ font-size:13.5px; color:var(--muted); margin-top:6px; line-height:1.55; }
+
+  /* onboarding timeline */
+  .days{ margin-top:34px; display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
+  .day{ background:var(--card); border:1px solid var(--card-line); border-radius:14px; padding:18px; }
+  .day .dn{ font-size:11px; font-weight:700; letter-spacing:0.14em; color:var(--cyan); }
+  .day .dt{ font-size:14px; font-weight:700; margin-top:6px; }
+  .day .dd{ font-size:12.5px; color:var(--muted-dim); margin-top:8px; line-height:1.5; }
+
+  /* faq */
+  .faq{ margin-top:34px; display:flex; flex-direction:column; gap:10px; max-width:820px; }
+  .qa{ background:var(--card); border:1px solid var(--card-line); border-radius:14px; overflow:hidden; }
+  .qa button{ width:100%; text-align:left; background:none; border:none; color:var(--ink); cursor:pointer;
+    padding:20px 24px; font-size:15.5px; font-weight:600; font-family:inherit; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+  .qa .plus{ flex:0 0 auto; color:var(--cyan); font-size:22px; font-weight:400; transition:transform .25s; line-height:1; }
+  .qa.open .plus{ transform:rotate(45deg); }
+  .qa .ans{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .qa .ans p{ padding:0 24px 22px; font-size:14px; color:var(--muted); line-height:1.65; }
+
+  /* apply banner */
+  .apply{ border-top:1px solid rgba(255,255,255,0.05); }
+  .apply-box{ border:1px solid rgba(0,204,255,0.45); border-radius:24px;
+    background:linear-gradient(140deg, rgba(0,204,255,0.13), rgba(0,204,255,0.03)); padding:56px 40px; text-align:center; }
+  .apply-box h2{ font-size:38px; }
+  .apply-box p{ font-size:16px; color:#D7E0EA; margin-top:16px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.6; }
+  .apply-box .btn{ margin-top:30px; font-size:16px; padding:15px 34px; }
+  .apply-box .small{ font-size:12.5px; color:var(--muted-dim); margin-top:18px; }
+
+  footer{ border-top:1px solid var(--card-line); padding:34px 0; }
+  .foot-in{ max-width:var(--max); margin:0 auto; padding:0 26px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; }
+  .foot-in .fw{ font-size:17px; font-weight:800; }
+  .foot-in .fw span{ color:var(--cyan-bright); }
+  .foot-in .ft{ font-size:12.5px; color:var(--muted-dim); margin-top:3px; }
+  .foot-in .phone{ font-size:13px; color:var(--muted); }
+  .foot-in .phone b{ color:#E7EDF3; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <div class="word">brandlete<span>.</span></div>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#earn">Earnings</a>
+      <a href="#tiers">Tiers</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfNyNahpSTQ4eiYtwfD-zg9TBAXc4lJFQhLP1jF851IJuPB3Q/viewform" target="_blank" rel="noopener">Apply now</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <span class="pill">BRANDLETE PLAYMAKER NETWORK &middot; BPN</span>
+  <h1>Open a door.<br><span class="accent">Get paid</span> when it wins.</h1>
+  <p class="sub">You already know the coaches, directors and families who run youth sports. A <b>Brandlete Playmaker</b> makes one warm introduction, and earns a real share of revenue when that team comes aboard. No pitching. No cold links. Just the people you already trust.</p>
+  <div class="hero-cta">
+    <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfNyNahpSTQ4eiYtwfD-zg9TBAXc4lJFQhLP1jF851IJuPB3Q/viewform" target="_blank" rel="noopener">Apply to the Network</a>
+    <a class="btn btn-ghost" href="#earn">See what you'd earn</a>
+  </div>
+  <div class="stat-strip">
+    <div class="stat"><div class="n">2.86 yrs</div><div class="l">Avg. time a kid stays in sport</div></div>
+    <div class="stat"><div class="n">25%</div><div class="l">Year-one revenue share</div></div>
+    <div class="stat"><div class="n">3 years</div><div class="l">You keep earning per account</div></div>
+    <div class="stat"><div class="n">No cap</div><div class="l">On what you can earn</div></div>
+  </div>
+</header>
+
+<!-- WHY -->
+<section class="wrap" id="why">
+  <div class="eyebrow"><span class="accent">&rarr;</span> Why this network exists</div>
+  <h2>The average youth athlete quits after <span class="accent">2.86 years</span>.</h2>
+  <p class="lede">That is the number we are fighting (Aspen Institute, State of Play). Every org that loses a kid at year three loses the story that would have kept them: the highlight, the profile, the moment that made them feel seen. Brandlete gives athletes a home for that story and gives orgs a reason kids stay. <b>Playmakers are the people who carry that message to the next org, the next coach, the next family, one real conversation at a time.</b></p>
+</section>
+
+<!-- WHAT -->
+<section class="wrap" id="what">
+  <div class="eyebrow"><span class="accent">&rarr;</span> What a Playmaker is</div>
+  <h2>A trusted insider, not a salesperson.</h2>
+  <p class="lede">A Brandlete Playmaker is a coach, club director, parent, athlete, alum or sports connector who brings us a team, program or department they know. You make the intro. We take it from there. When the deal wins, you get paid.</p>
+  <div class="cards">
+    <div class="c"><div class="k">1</div><h3>Connected</h3><p>You have real relationships with the people who run or shape youth sports orgs.</p></div>
+    <div class="c"><div class="k">2</div><h3>Credible</h3><p>When you say "you should look at this," people actually listen.</p></div>
+    <div class="c"><div class="k">3</div><h3>Honest</h3><p>You won't oversell or attach your name to something you wouldn't use yourself.</p></div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="wrap" id="how">
+  <div class="eyebrow"><span class="accent">&rarr;</span> How it works &mdash; the relay</div>
+  <h2>The handoff, start to finish.</h2>
+  <div class="relay">
+    <div class="step"><div class="num">1</div><div><div class="st-t">Spot the play</div><div class="st-d">You identify a team, program or department you know that's a fit for Brandlete.</div></div></div>
+    <div class="step"><div class="num">2</div><div><div class="st-t">Make the intro</div><div class="st-d">You send us a clean, warm door-opener only you can make.</div></div></div>
+    <div class="step"><div class="num">3</div><div><div class="st-t">We take the handoff</div><div class="st-d">Brian and John run point from here. You don't sell and you don't close.</div></div></div>
+    <div class="step"><div class="num">4</div><div><div class="st-t">We win the deal</div><div class="st-d">Brandlete pitches, demos and gets it over the line.</div></div></div>
+    <div class="step"><div class="num">5</div><div><div class="st-t">We onboard the team</div><div class="st-d">We get them live and taken care of.</div></div></div>
+    <div class="step"><div class="num">6</div><div><div class="st-t">You get paid</div><div class="st-d">Once the referred org becomes a paying account, your revenue share starts.</div></div></div>
+  </div>
+  <p class="lede" style="margin-top:26px;"><b>Your credit is locked the day you make the intro</b> and held while the deal works through our pipeline, so a long sales cycle never costs you the deal. The commission clock starts when the account makes its first payment, no matter how long the close takes.</p>
+</section>
+
+<!-- EARN / CALCULATOR -->
+<section class="wrap" id="earn">
+  <div class="eyebrow"><span class="accent">&rarr;</span> What you take home</div>
+  <h2>You earn on real revenue, for three years.</h2>
+  <p class="lede">When a team you referred becomes a paying Brandlete account, you earn a share of what that account actually pays us, on a declining schedule over the first three years. No cap.</p>
+
+  <div class="rates">
+    <div class="rate"><div class="ry">YEAR 1</div><div class="rp">25%</div></div>
+    <div class="rate"><div class="ry">YEAR 2</div><div class="rp">12.5%</div></div>
+    <div class="rate"><div class="ry">YEAR 3</div><div class="rp">7.5%</div></div>
+  </div>
+
+  <div class="calc-wrap">
+    <div class="calc-panel">
+      <div class="calc-label">Referred account value</div>
+      <div class="calc-val" id="accVal">$25,000<span>/year</span></div>
+      <div class="calc-ath" id="athCount">about 694 athletes at $3/athlete/month</div>
+      <input type="range" id="slider" min="5000" max="150000" step="1000" value="25000">
+      <div class="range-ends"><span>$5,000</span><span>$150,000</span></div>
+    </div>
+    <div class="payout">
+      <h4>Your take-home</h4>
+      <div class="yr"><div class="yl">Year 1 <b>(25%)</b></div><div class="yv" id="y1">$6,250</div></div>
+      <div class="yr"><div class="yl">Year 2 <b>(12.5%)</b></div><div class="yv" id="y2">$3,125</div></div>
+      <div class="yr"><div class="yl">Year 3 <b>(7.5%)</b></div><div class="yv" id="y3">$1,875</div></div>
+      <div class="total"><div class="tl">3-YEAR TAKE-HOME</div><div class="tv" id="ytot">$11,250</div></div>
+    </div>
+  </div>
+  <p class="calc-foot">Assumes the account stays on Brandlete at the same annual level each year. Your share is always calculated on net revenue Brandlete actually collects, after refunds and discounts. Paid net-30 after each period is collected, only while the account stays active.</p>
+</section>
+
+<!-- TIERS -->
+<section class="wrap" id="tiers">
+  <div class="eyebrow"><span class="accent">&rarr;</span> Recognition tiers</div>
+  <h2>The more you land, the more you get.</h2>
+  <p class="lede">The cash is the schedule above. These tiers add perks and standing as you bring on more orgs.</p>
+  <div class="tiers">
+    <div class="tier"><div class="tn">Rookie</div><div class="tr">1&ndash;2 orgs</div><div class="td">Standard commission schedule.</div></div>
+    <div class="tier"><div class="tn">Starter</div><div class="tr">3&ndash;5 orgs</div><div class="td">Early access to new features.</div></div>
+    <div class="tier"><div class="tn">Captain</div><div class="tr">6&ndash;10 orgs</div><div class="td">Co-marketing and a priority support line.</div></div>
+    <div class="tier"><div class="tn">All-Star</div><div class="tr">10+ orgs</div><div class="td">Advisory input on the roadmap and revenue-share consideration.</div></div>
+  </div>
+</section>
+
+<!-- FIT -->
+<section class="wrap" id="fit">
+  <div class="eyebrow"><span class="accent">&rarr;</span> Who to refer</div>
+  <h2>The fit filter.</h2>
+  <div class="split">
+    <div class="listcard good">
+      <h3>Great fits</h3>
+      <ul>
+        <li><span class="mk">&check;</span> Youth sports orgs, clubs, academies, travel teams (any sport).</li>
+        <li><span class="mk">&check;</span> Orgs that already care about athlete development and retention.</li>
+        <li><span class="mk">&check;</span> Directors frustrated by kids aging out or drifting away.</li>
+      </ul>
+    </div>
+    <div class="listcard bad">
+      <h3>Don't burn a warm intro on</h3>
+      <ul>
+        <li><span class="mk">&times;</span> Orgs with no digital presence and no intent to build one.</li>
+        <li><span class="mk">&times;</span> One-off rec leagues with no continuity year to year.</li>
+        <li><span class="mk">&times;</span> Anyone a quick 60-second look tells you won't stick.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PLAYBOOK -->
+<section class="wrap" id="playbook">
+  <div class="eyebrow"><span class="accent">&rarr;</span> The playbook</div>
+  <h2>How to actually get referrals.</h2>
+  <div class="pb">
+    <div class="pbrow"><div class="pt">Lead with a question</div><div class="pd">"How are you keeping kids engaged past the second season?" opens more doors than "Check out this platform."</div></div>
+    <div class="pbrow"><div class="pt">Use the anchor</div><div class="pd">Name the one specific thing you know about their org. It signals you actually see them.</div></div>
+    <div class="pbrow"><div class="pt">Cite the stat</div><div class="pd">The 2.86-year retention number reframes it from "another tool" to "the problem you already feel."</div></div>
+    <div class="pbrow"><div class="pt">Show, don't tell</div><div class="pd">Point them to a live athlete profile so they see it, not just hear about it.</div></div>
+    <div class="pbrow"><div class="pt">Label the objection</div><div class="pd">"You might think it's one more thing to manage, fair. Worth ten minutes to see if it isn't?"</div></div>
+    <div class="pbrow"><div class="pt">Never fake it</div><div class="pd">One inauthentic intro costs more credibility than ten good ones earn. If it doesn't feel real, don't send it.</div></div>
+  </div>
+</section>
+
+<!-- CARRY THE FLAG -->
+<section class="wrap" id="flag">
+  <div class="eyebrow"><span class="accent">&rarr;</span> Carry the flag</div>
+  <h2>Claim the role in public.</h2>
+  <p class="lede">Being a Playmaker is worth wearing openly. The more visible you are as part of the BPN, the more warm doors open on their own. Encouraged, not required, but the Playmakers who do it source more deals.</p>
+  <div class="cards">
+    <div class="c"><h3>List the role on LinkedIn</h3><p>Add "Brandlete Playmaker" to your profile. It signals credibility and makes you a magnet for the exact orgs you'd want to refer.</p></div>
+    <div class="c"><h3>Post about Brandlete</h3><p>Share a win, an athlete profile, or the 2.86-year stat, in your own voice. Your take carries further than a company line.</p></div>
+    <div class="c"><h3>Reshare from the company</h3><p>When Brandlete's page or leadership posts, reshare with a line of your own. A reshare from a trusted insider travels far.</p></div>
+    <div class="c"><h3>Tag and connect</h3><p>Follow the company page, tag us when it fits, and connect with the directors and orgs you meet along the way.</p></div>
+  </div>
+</section>
+
+<!-- ONBOARDING -->
+<section class="wrap" id="onboard">
+  <div class="eyebrow"><span class="accent">&rarr;</span> Onboarding</div>
+  <h2>Your first 7 days.</h2>
+  <div class="days">
+    <div class="day"><div class="dn">DAY 1</div><div class="dt">Get set up</div><div class="dd">Sign the agreement, get your link + referral code, read the playbook.</div></div>
+    <div class="day"><div class="dn">DAY 2</div><div class="dt">Learn the product</div><div class="dd">Walk a live demo and explore a real athlete profile firsthand.</div></div>
+    <div class="day"><div class="dn">DAY 3</div><div class="dt">Build your list</div><div class="dd">Write down every org in your network. Run each through the fit filter.</div></div>
+    <div class="day"><div class="dn">DAY 4</div><div class="dt">Find your anchors</div><div class="dd">For your top 5 orgs, find one specific, true anchor each.</div></div>
+    <div class="day"><div class="dn">DAY 5</div><div class="dt">First intros</div><div class="dd">Make 2&ndash;3 warm introductions. Lead with a question. Use the anchor.</div></div>
+    <div class="day"><div class="dn">DAY 6</div><div class="dt">Follow through</div><div class="dd">Loop us in on any org that shows interest so we can take it from there.</div></div>
+    <div class="day"><div class="dn">DAY 7</div><div class="dt">Review</div><div class="dd">Check in with your Brandlete contact. What landed, what didn't, what's next.</div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="wrap" id="faq">
+  <div class="eyebrow"><span class="accent">&rarr;</span> FAQ</div>
+  <h2>Straight answers.</h2>
+  <div class="faq">
+    <div class="qa"><button>Do I have to close the deal?<span class="plus">+</span></button><div class="ans"><p>No. You open the door with a warm intro. Brian and John run point on the demo, onboarding and close, looping in Judd when it helps.</p></div></div>
+    <div class="qa"><button>What if the deal takes months to close?<span class="plus">+</span></button><div class="ans"><p>You're still paid. Your credit locks the day you make the intro and holds while the deal moves through our pipeline. A 65-day close, a six-month close, it doesn't matter. The moment that org becomes a paying account, your commission starts.</p></div></div>
+    <div class="qa"><button>What if the org signs up much later?<span class="plus">+</span></button><div class="ans"><p>If they came through your link or named you as the source, you're credited. If it's been a long while, reach back out and we'll confirm the attribution together.</p></div></div>
+    <div class="qa"><button>Can I refer orgs outside my region?<span class="plus">+</span></button><div class="ans"><p>Only if you have a real relationship there. This works because of trust, not reach.</p></div></div>
+    <div class="qa"><button>How do I get paid?<span class="plus">+</span></button><div class="ans"><p>Net-30 after Brandlete collects the referred account's payment for each period, via Stripe or ACH. You set your preference.</p></div></div>
+    <div class="qa"><button>Is there a cap on what I can earn?<span class="plus">+</span></button><div class="ans"><p>No cap. Refer a full athletic department or a large multi-team club and your share scales right along with it.</p></div></div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section class="wrap apply" id="apply">
+  <div class="apply-box">
+    <div class="eyebrow" style="justify-content:center;"><span class="accent">&rarr;</span> Getting started</div>
+    <h2>Ready to open your first door?</h2>
+    <p>Apply to the Brandlete Playmaker Network. Bring your top 5 orgs and the anchor you found for each, and we'll get your link live.</p>
+    <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfNyNahpSTQ4eiYtwfD-zg9TBAXc4lJFQhLP1jF851IJuPB3Q/viewform" target="_blank" rel="noopener">Apply to the Brandlete Playmaker Network</a>
+    <div class="small">One real conversation. That's how this whole thing grows.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <div>
+      <div class="fw">brandlete<span>.com</span></div>
+      <div class="ft">The Sports Program Operating System &amp; Athlete Development Engine.</div>
+    </div>
+    <div class="phone">Questions? <b>716-218-8815</b></div>
+  </div>
+</footer>
+
+<script>
+  // Commission calculator
+  var slider = document.getElementById('slider');
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('en-US'); };
+  function update(){
+    var v = +slider.value;
+    var pct = (v - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.setProperty('--fill', pct + '%');
+    document.getElementById('accVal').innerHTML = fmt(v) + '<span>/year</span>';
+    var athletes = Math.round(v / 36); // $3/athlete/month = $36/yr
+    document.getElementById('athCount').textContent = 'about ' + athletes.toLocaleString('en-US') + ' athletes at $3/athlete/month';
+    var y1 = v * 0.25, y2 = v * 0.125, y3 = v * 0.075;
+    document.getElementById('y1').textContent = fmt(y1);
+    document.getElementById('y2').textContent = fmt(y2);
+    document.getElementById('y3').textContent = fmt(y3);
+    document.getElementById('ytot').textContent = fmt(y1 + y2 + y3);
+  }
+  slider.addEventListener('input', update);
+  update();
+
+  // FAQ accordion
+  document.querySelectorAll('.qa button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var qa = b.parentElement;
+      var open = qa.classList.contains('open');
+      qa.classList.toggle('open');
+      var ans = qa.querySelector('.ans');
+      ans.style.maxHeight = open ? '0' : (ans.scrollHeight + 'px');
+    });
+  });
+</script>
+
+</body>
+</html>
