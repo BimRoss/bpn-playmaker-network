@@ -27,7 +27,7 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   :root{
     --cyan:#00CCFF; --cyan-bright:#5CDBFF; --cyan-deep:#00A8DB;
-    --ink:#ffffff; --muted:#8A93A8; --muted-dim:#67707F;
+    --ink:#ffffff; --muted:#EEF3F9; --muted-dim:#D6DEE9;
     --card:rgba(255,255,255,0.028); --card-line:rgba(255,255,255,0.09);
     --bg:#0A0E17;
     --max:1080px;
@@ -56,6 +56,9 @@
   .nav-in{ max-width:var(--max); margin:0 auto; padding:15px 26px; display:flex; align-items:center; justify-content:space-between; }
   .word{ font-size:20px; font-weight:800; letter-spacing:-0.02em; }
   .word span{ color:var(--cyan-bright); }
+  .brandlogo{ display:flex; align-items:center; }
+  .brandlogo img{ height:27px; width:auto; display:block; }
+  @media(max-width:720px){ .brandlogo img{ height:24px; } }
   .nav-links{ display:flex; gap:26px; align-items:center; }
   .nav-links a{ font-size:13.5px; color:var(--muted); font-weight:500; transition:color .2s; }
   .nav-links a:hover{ color:var(--ink); }
@@ -204,7 +207,7 @@
 
 <nav>
   <div class="nav-in">
-    <div class="word">brandlete<span>.</span></div>
+    <div class="brandlogo"><img src="/brandlete-logo.png" alt="Brandlete"></div>
     <div class="nav-links">
       <a href="#how">How it works</a>
       <a href="#earn">Earnings</a>
